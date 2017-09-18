@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>WebSocket</title>
+</head>
+<body>
+	<input type="text" id="txt">
+	<button type="button" style="cursor: pointer;" id="btn">Send</button>
+	<script>
+		var ws = new WebSocket("ws://localhost:3000");
+		console.log(ws)
+		ws.onopen = function() {
+			console.log(" websocket open..");
+			document.querySelector('#btn').onclick = function() {
+				var txt = document.querySelector("#txt").value;
+				if(txt){
+					ws.send(txt);
+				}			
+			}
+		}
+		ws.onclose = function(e) {
+			var msg = e.data;
+			showMessage(msg);
+		}
+		ws.onmessage = function(e) {
+			var msg = e.data;
+			showMessage(msg);
+		}
+
+		function showMessage(msg){
+			var newDiv = document.createElement("div");
+				newDiv.innerHTML = msg;
+				document.body.appendChild(newDiv);
+		}
+	</script>
+</body>
+</html>
